@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const axios_1 = __importDefault(require("axios"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const port = 3000;
 // Function to fetch token price from Ref Finance indexer
 function getTokenPrice(tokenId) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,6 +29,8 @@ function getTokenPrice(tokenId) {
         }
     });
 }
+const port = 3000;
+app.use((0, cors_1.default)({ origin: 'https://spearonnear.github.io' }));
 // API endpoint to get conversion rate between two tokens
 app.get('/convert-tokens', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { from, to, amount } = req.query;
