@@ -32,7 +32,7 @@ function getTokenPrice(tokenId) {
 const port = 3000;
 app.use((0, cors_1.default)({ origin: 'https://spearonnear.github.io' }));
 // API endpoint to get conversion rate between two tokens
-app.post('/convert-tokens', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get('/convert-tokens', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { from, to, amount } = req.query;
     if (!from || !to || !amount) {
         return res.status(400).json({ error: 'Missing required query parameters: from, to, amount' });
@@ -60,7 +60,7 @@ app.post('/convert-tokens', (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 }));
 // API endpoint to get token amount equivalent to a given USD value
-app.post('/convert-usd-to-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get('/convert-usd-to-token', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tokenId, usdAmount } = req.query;
     if (!tokenId || !usdAmount) {
         return res.status(400).json({ error: 'Missing required query parameters: tokenId, usdAmount' });

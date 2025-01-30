@@ -17,7 +17,7 @@ const port = 3000;
 app.use(cors({ origin: 'https://spearonnear.github.io' }));
 
 // API endpoint to get conversion rate between two tokens
-app.post('/convert-tokens', async (req: Request, res: Response) => {
+app.get('/convert-tokens', async (req: Request, res: Response) => {
   const { from, to, amount }: { from?: string, to?: string, amount?: string } = req.query;
 
   if (!from || !to || !amount) {
@@ -50,7 +50,7 @@ app.post('/convert-tokens', async (req: Request, res: Response) => {
 });
 
 // API endpoint to get token amount equivalent to a given USD value
-app.post('/convert-usd-to-token', async (req: Request, res: Response) => {
+app.get('/convert-usd-to-token', async (req: Request, res: Response) => {
   const { tokenId, usdAmount }: { tokenId?: string, usdAmount?: string } = req.query;
 
   if (!tokenId || !usdAmount) {
