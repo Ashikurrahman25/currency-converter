@@ -1,8 +1,7 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
-
+import cors from 'cors';
 const app = express();
-const port = 3000;
 
 // Function to fetch token price from Ref Finance indexer
 async function getTokenPrice(tokenId: string): Promise<number | null> {
@@ -14,6 +13,8 @@ async function getTokenPrice(tokenId: string): Promise<number | null> {
     return null;
   }
 }
+const port = 3000;
+app.use(cors({ origin: 'https://spearonnear.github.io' }));
 
 // API endpoint to get conversion rate between two tokens
 app.get('/convert-tokens', async (req: Request, res: Response) => {
