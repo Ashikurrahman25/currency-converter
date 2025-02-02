@@ -83,6 +83,30 @@ app.get('/convert-usd-to-token', (req, res) => __awaiter(void 0, void 0, void 0,
         res.status(500).json({ error: 'Error calculating equivalent token amount' });
     }
 }));
+// API endpoint to convert tokens to USD
+app.get('/convert-token-to-usd', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tokenId, tokenAmount } = req.query;
+    if (!tokenId || !tokenAmount) {
+        return res.status(400).json({ error: 'Missing required query parameters: tokenId, tokenAmount' });
+    }
+    try {
+        // Fetch token price from Ref Finance indexer
+        const tokenPrice = yield getTokenPrice(tokenId);
+        if (tokenPrice === null) {
+            return res.status(500).json({ error: 'Error fetching token price' });
+        }
+        // Calculate the equivalent USD value for the given token amount
+        const equivalentUsd = parseFloat(tokenAmount) * tokenPrice;
+        res.json({
+            tokenId,
+            tokenAmount: parseFloat(tokenAmount),
+            equivalent_usd: equivalentUsd
+        });
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Error calculating equivalent USD amount' });
+    }
+}));
 // Start the server
 app.listen(port, () => {
     console.log(`Token Conversion API is running at http://localhost:${port}`);
