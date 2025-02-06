@@ -14,7 +14,9 @@ async function getTokenPrice(tokenId: string): Promise<number | null> {
   }
 }
 const port = 3000;
-app.use(cors({ origin: 'https://spearonnear.github.io' }));
+app.use(cors({
+  origin: ['https://spearonnear.github.io', 'https://game.spearonnear.com']
+}));
 
 // API endpoint to get conversion rate between two tokens
 app.get('/convert-tokens', async (req: Request, res: Response) => {
