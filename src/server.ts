@@ -27,7 +27,6 @@ app.get('/convert-tokens', async (req: Request, res: Response) => {
   }
 
   try {
-    // Fetch prices for the two tokens from Ref Finance indexer
     const fromPrice = await getTokenPrice(from);
     const toPrice = await getTokenPrice(to);
 
@@ -35,15 +34,14 @@ app.get('/convert-tokens', async (req: Request, res: Response) => {
       return res.status(500).json({ error: 'Error fetching token prices' });
     }
 
-    // Calculate the conversion rate
     const exchangeRate = fromPrice / toPrice;
-    const exchangedValue = exchangeRate * parseFloat(amount);
+    const exchangedValue = (exchangeRate * parseFloat(amount)).toFixed(8);
 
     res.json({
       from,
       to,
       amount: parseFloat(amount),
-      exchange_rate: exchangeRate,
+      exchange_rate: exchangeRate.toFixed(8),
       exchanged_value: exchangedValue
     });
   } catch (error) {
@@ -60,15 +58,13 @@ app.get('/convert-usd-to-token', async (req: Request, res: Response) => {
   }
 
   try {
-    // Fetch token price from Ref Finance indexer
     const tokenPrice = await getTokenPrice(tokenId);
 
     if (tokenPrice === null) {
       return res.status(500).json({ error: 'Error fetching token price' });
     }
 
-    // Calculate the equivalent token amount for the given USD value
-    const equivalentTokens = parseFloat(usdAmount) / tokenPrice;
+    const equivalentTokens = (parseFloat(usdAmount) / tokenPrice).toFixed(8);
 
     res.json({
       tokenId,
@@ -89,15 +85,13 @@ app.get('/convert-token-to-usd', async (req: Request, res: Response) => {
   }
 
   try {
-    // Fetch token price from Ref Finance indexer
     const tokenPrice = await getTokenPrice(tokenId);
 
     if (tokenPrice === null) {
       return res.status(500).json({ error: 'Error fetching token price' });
     }
 
-    // Calculate the equivalent USD value for the given token amount
-    const equivalentUsd = parseFloat(tokenAmount) * tokenPrice;
+    const equivalentUsd = (parseFloat(tokenAmount) * tokenPrice).toFixed(8);
 
     res.json({
       tokenId,

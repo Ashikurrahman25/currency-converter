@@ -40,20 +40,18 @@ app.get('/convert-tokens', (req, res) => __awaiter(void 0, void 0, void 0, funct
         return res.status(400).json({ error: 'Missing required query parameters: from, to, amount' });
     }
     try {
-        // Fetch prices for the two tokens from Ref Finance indexer
         const fromPrice = yield getTokenPrice(from);
         const toPrice = yield getTokenPrice(to);
         if (fromPrice === null || toPrice === null) {
             return res.status(500).json({ error: 'Error fetching token prices' });
         }
-        // Calculate the conversion rate
         const exchangeRate = fromPrice / toPrice;
-        const exchangedValue = exchangeRate * parseFloat(amount);
+        const exchangedValue = (exchangeRate * parseFloat(amount)).toFixed(8);
         res.json({
             from,
             to,
             amount: parseFloat(amount),
-            exchange_rate: exchangeRate,
+            exchange_rate: exchangeRate.toFixed(8),
             exchanged_value: exchangedValue
         });
     }
@@ -68,13 +66,11 @@ app.get('/convert-usd-to-token', (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(400).json({ error: 'Missing required query parameters: tokenId, usdAmount' });
     }
     try {
-        // Fetch token price from Ref Finance indexer
         const tokenPrice = yield getTokenPrice(tokenId);
         if (tokenPrice === null) {
             return res.status(500).json({ error: 'Error fetching token price' });
         }
-        // Calculate the equivalent token amount for the given USD value
-        const equivalentTokens = parseFloat(usdAmount) / tokenPrice;
+        const equivalentTokens = (parseFloat(usdAmount) / tokenPrice).toFixed(8);
         res.json({
             tokenId,
             usdAmount: parseFloat(usdAmount),
@@ -92,13 +88,11 @@ app.get('/convert-token-to-usd', (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(400).json({ error: 'Missing required query parameters: tokenId, tokenAmount' });
     }
     try {
-        // Fetch token price from Ref Finance indexer
         const tokenPrice = yield getTokenPrice(tokenId);
         if (tokenPrice === null) {
             return res.status(500).json({ error: 'Error fetching token price' });
         }
-        // Calculate the equivalent USD value for the given token amount
-        const equivalentUsd = parseFloat(tokenAmount) * tokenPrice;
+        const equivalentUsd = (parseFloat(tokenAmount) * tokenPrice).toFixed(8);
         res.json({
             tokenId,
             tokenAmount: parseFloat(tokenAmount),
