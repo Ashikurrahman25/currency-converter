@@ -15,7 +15,7 @@ async function getTokenPrice(tokenId: string): Promise<number | null> {
 }
 const port = 3000;
 app.use(cors({
-  origin: ['https://spearonnear.github.io', 'https://game.spearonnear.com', '*']
+  origin: ['https://spearonnear.github.io', 'https://game.spearonnear.com', '*', 'http://localhost:8080','https://bettingpool.blackdragon.casino']
 }));
 
 // API endpoint to get conversion rate between two tokens
